@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Форум — Категории</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 5px #ccc;
+        }
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .description {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #555;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Категории форума</h1>
+
+    <div class="container">
+        {% for category in categories %}
+        <div class="card">
+            <img src="{{ category.image.url }}" alt="">
+            <div class="card-body">
+                <div class="title">{{ category.title }}</div>
+                <div class="description">{{ category.description }}</div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <a href="{% url 'create_category' %}">
+            <button style="padding: 10px 20px; margin-bottom: 20px;">
+                Создать категорию
+            </button>
+        </a>
+    </div>
+
+</body>
+</html>
