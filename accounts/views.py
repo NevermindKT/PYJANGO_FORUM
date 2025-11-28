@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import RegisterForm, LoginForm
@@ -29,3 +30,12 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("categories_index")
+
+@login_required
+def profile_view(request):
+    profile = request.user.profile
+    return render(request, "accounts/profile.html",
+                  {
+                      "user": request.user,
+                      "profile": profile
+                  })

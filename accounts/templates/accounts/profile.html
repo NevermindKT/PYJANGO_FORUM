@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/Profile.css' %}">
+</head>
+<body>
+
+<div class="profile-card">
+    <h2>Профиль пользователя</h2>
+
+    <div class="row"><span class="label">Имя:</span> <span class="value">{{ user.first_name }}</span></div>
+    <div class="row"><span class="label">Фамилия:</span> <span class="value">{{ user.last_name }}</span></div>
+    <div class="row"><span class="label">Никнейм:</span> <span class="value">{{ user.username }}</span></div>
+    <div class="row"><span class="label">Email:</span> <span class="value">{{ user.email }}</span></div>
+    <div class="row"><span class="label">Дата рождения:</span> <span class="value">{{ profile.date_of_birth }}</span></div>
+    <div class="row"><span class="label">Зарегистрирован:</span> <span class="value">{{ user.date_joined|date:"d.m.Y" }}</span></div>
+
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button class="logout-btn">Выйти</button>
+    </form>
+</div>
+
+</body>
+</html>
