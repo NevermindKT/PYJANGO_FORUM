@@ -1,6 +1,6 @@
-<h1>Категория: {{ category.name }}</h1>
+<h1>Категория: {{ category.title }}</h1>
 
-{% if user.is_authenticated %}
+{% if user.is_staff %}
 <form action="{% url 'delete_category' category.id %}" method="post">
     {% csrf_token %}
     <button type="submit" class="danger-btn">Удалить категорию</button>

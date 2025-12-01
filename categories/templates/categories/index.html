@@ -14,13 +14,15 @@
 
     <div class="container">
         {% for category in categories %}
-        <div class="card">
-            <img src="{{ category.image.url }}" alt="">
-            <div class="card-body">
-                <div class="title">{{ category.title }}</div>
-                <div class="description">{{ category.description }}</div>
+        <a href="{% url 'category_detail' category.id %}">
+            <div class="card">
+                <img src="{{ category.image.url }}" alt="">
+                <div class="card-body">
+                    <div class="title">{{ category.title }}</div>
+                    <div class="description">{{ category.description }}</div>
+                </div>
             </div>
-        </div>
+        </a>
         {% endfor %}
 
         <a href="{% url 'create_category' %}">
