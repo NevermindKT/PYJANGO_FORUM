@@ -1,0 +1,25 @@
+<h1>Категория: {{ category.name }}</h1>
+
+{% if user.is_authenticated %}
+<form action="{% url 'delete_category' category.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="danger-btn">Удалить категорию</button>
+</form>
+{% endif %}
+
+<hr>
+
+{% for post in posts %}
+<div class="card">
+    <p><b>Автор:</b> {{ post.author.username }}</p>
+    <p>{{ post.text }}</p>
+
+    <a href="{% url 'post_detail' post.id %}">Перейти в обсуждения</a>
+
+    <p>Лайков: {{ post.likes.count }}</p>
+    <p>Создано: {{ post.created_at|date:"d.m.Y H:i" }}</p>
+</div>
+<hr>
+{% empty %}
+<p>Постов пока нет.</p>
+{% endfor %}
