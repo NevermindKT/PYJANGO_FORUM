@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'posts/post_detail.css' %}">
+</head>
+<body>
+
+
+<h1>{{ post.name }}</h1>
+
+<div class="post-card">
+    <p><b>Автор:</b> {{ post.author.username }}</p>
+    <p>{{ post.text }}</p>
+    <p>Дата: {{ post.created_at|date:"d.m.Y H:i" }}</p>
+    <p>Лайков: {{ post.likes.count }}</p>
+</div>
+
+<a href="{% url 'category_detail' post.category.id %}">Назад</a>
+
+<h2>Комментарии</h2>
+
+{% for comment in comments %}
+<div class="comment-card">
+    <p><b>{{ comment.author.username }}</b> написал:</p>
+    <p>{{ comment.text }}</p>
+    <p>Дата: {{ comment.created_at|date:"d.m.Y H:i" }}</p>
+    <p>Лайков: {{ comment.likes.count }}</p>
+
+    {% if user == comment.author or user.is_staff %}
+    <form action="{% url 'delete_comment' comment.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-delete">Удалить</button>
+    </form>
+    {% endif %}
+</div>
+
+{% empty %}
+<p>Комментариев пока нет.</p>
+{% endfor %}
+
+<h3>Добавить комментарий</h3>
+
+{% if user.is_authenticated %}
+<form method="post" class="comment-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+</form>
+{% else %}
+<p>Для комментирования <a href="/accounts/login/">войдите</a>.</p>
+{% endif %}
+
+</body>
+</html>

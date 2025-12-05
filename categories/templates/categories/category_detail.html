@@ -1,25 +1,50 @@
-<h1>Категория: {{ category.title }}</h1>
+{% load static %}
 
-{% if user.is_staff %}
-<form action="{% url 'delete_category' category.id %}" method="post">
-    {% csrf_token %}
-    <button type="submit" class="danger-btn">Удалить категорию</button>
-</form>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Категория {{category.title}}</title>
 
-<hr>
+    <link rel="stylesheet" href="{% static 'categories/category_detail.css' %}">
+</head>
+<body>
+    <h1>Категория: {{ category.title }}</h1>
 
-{% for post in posts %}
-<div class="card">
-    <p><b>Автор:</b> {{ post.author.username }}</p>
-    <p>{{ post.text }}</p>
+    {% if user.is_staff %}
+    <form action="{% url 'delete_category' category.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="danger-btn">Удалить категорию</button>
+    </form>
+    {% endif %}
 
-    <a href="{% url 'post_detail' post.id %}">Перейти в обсуждения</a>
+    <a href="{% url 'create_post' category.id %}">Создать пост</a>
 
-    <p>Лайков: {{ post.likes.count }}</p>
-    <p>Создано: {{ post.created_at|date:"d.m.Y H:i" }}</p>
-</div>
-<hr>
-{% empty %}
-<p>Постов пока нет.</p>
-{% endfor %}
+    <hr>
+    <a href="{% url 'categories_index' %}">Назад</a>
+    <hr>
+
+    {% for post in posts %}
+    <div class="card">
+        <p><b>Название:</b> {{ post.name }}</p>
+        <p><b>Автор:</b> {{ post.author.username }}</p>
+
+        <p>{{ post.text }}</p>
+        <p>Создано: {{ post.created_at|date:"d.m.Y H:i" }}</p>
+        <p>Лайков: {{ post.likes.count }}</p>
+
+        <a href="{% url 'post_detail' post.id %}">Перейти в обсуждения</a>
+
+        {% if user == post.author or user.is_staff %}
+        <form action="{% url 'post_delete' post.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Удалить пост</button>
+        </form>
+        {% endif %}
+    </div>
+    <hr>
+    {% empty %}
+    <p>Постов пока нет.</p>
+    {% endfor %}
+</body>
+</html>
